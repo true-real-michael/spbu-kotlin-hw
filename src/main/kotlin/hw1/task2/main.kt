@@ -1,5 +1,3 @@
-package hw1.task2
-
 import kotlin.math.floor
 import kotlin.math.sqrt
 
