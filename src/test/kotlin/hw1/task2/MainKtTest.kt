@@ -1,3 +1,5 @@
+package hw1.task2
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
