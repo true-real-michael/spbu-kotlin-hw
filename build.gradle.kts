@@ -1,8 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version "1.6.10"
-    application
+    id("io.gitlab.arturbosch.detekt") version "1.19.0"
 }
 
 group = "me.qwemo"
@@ -13,17 +11,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    implementation(kotlin("stdlib"))
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
 }
+
 
 tasks.test {
     useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-application {
-    mainClass.set("MainKt")
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
