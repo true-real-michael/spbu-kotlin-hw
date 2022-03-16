@@ -8,8 +8,12 @@ class REPL {
     data class REPLCommand(var commandName: REPLCommandNames, var arg1: Int = 0, var arg2: Int = 0)
 
     private val storangeInstance = PerformedCommandStorage()
-    private val helpMessage =
-        """Available commands:
+
+    companion object {
+        const val ONE_ARGUEMENT = 2
+        const val TWO_ARGUEMENTS = 3
+        val helpMessage =
+            """Available commands:
             |  pushback <int>     appends the number to the list
             |  pushfront <int>    adds the number to the front of the list
             |  undo               undoes the latest action
@@ -18,6 +22,7 @@ class REPL {
             |  help               shows this message
             |  exit               exits the repl
         """.trimMargin()
+    }
 
     fun run() {
         while (true) {
@@ -35,11 +40,6 @@ class REPL {
         "print" -> REPLCommandNames.PRINT
         "exit" -> REPLCommandNames.EXIT
         else -> REPLCommandNames.HELP
-    }
-
-    companion object {
-        const val ONE_ARGUEMENT = 2
-        const val TWO_ARGUEMENTS = 3
     }
 
     private fun parseRawCommand(rawCommand: String): REPLCommand {
