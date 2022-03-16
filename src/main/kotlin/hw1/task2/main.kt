@@ -2,26 +2,19 @@ import kotlin.math.floor
 import kotlin.math.sqrt
 
 fun eratosthenes(n: Int): List<Int> {
-    val sieve = BooleanArray(n + 2) { true }
-    for (i in 2..((floor(sqrt(n.toDouble())) + 1).toInt())) {
-        if (sieve[i]) {
-            var j = 2 * i
-            while (j <= n) {
-                sieve[j] = false
-                j += i
-            }
-        }
+    require(n >= 2) { "n < 2 are not accepted" }
+    var sieve = (2..n).toMutableList()
+
+    for (d in 2..floor(sqrt(n.toDouble())).toInt()) {
+        sieve = sieve.filter { it == d || it % d != 0 }.toMutableList()
     }
-    val res = MutableList<Int>(0) { 0 }
-    for (i in 2..n)
-        if (sieve[i])
-            res.add(i)
-    return res
+
+    return sieve
 }
 
 fun main() {
     val n = readln().toIntOrNull()
     if (n == null || n < 1) println("Illegal Input. Positive integers only are accepted.")
-    else if (n < 2) println("No prime numbers there :)")
+    else if (n < 2) println("No prime numbers in the interval 0..$n")
     else println(eratosthenes(n).joinToString())
 }
