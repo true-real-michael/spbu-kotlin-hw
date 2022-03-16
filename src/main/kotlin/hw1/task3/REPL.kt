@@ -2,9 +2,9 @@ package hw1.task3
 
 import kotlin.system.exitProcess
 
-object REPL {
+class REPL {
 
-    enum class REPLCommandNames() { PUSHBACK, PUSHFRONT, UNDO, MOVE, PRINT, HELP, EXIT }
+    enum class REPLCommandNames { PUSHBACK, PUSHFRONT, UNDO, MOVE, PRINT, HELP, EXIT }
     data class REPLCommand(var commandName: REPLCommandNames, var arg1: Int = 0, var arg2: Int = 0)
 
     private val storangeInstance = PerformedCommandStorage()
@@ -41,29 +41,23 @@ object REPL {
         }
         val resultingCommand = REPLCommand(commandName)
 
-        if (commandName == REPLCommandNames.PUSHBACK || commandName == REPLCommandNames.PUSHFRONT) {
-            if (splitted.size == 2) {
-                val arg = splitted[1].toIntOrNull()
-                if (arg != null)
-                    resultingCommand.arg1 = arg
-                else
-                    resultingCommand.commandName = REPLCommandNames.HELP
+        if ((commandName == REPLCommandNames.PUSHBACK || commandName == REPLCommandNames.PUSHFRONT) && splitted.size == 2) {
+            val arg = splitted[1].toIntOrNull()
+            if (arg != null)
+                resultingCommand.arg1 = arg
+            else
+                resultingCommand.commandName = REPLCommandNames.HELP
+        } else if (commandName == REPLCommandNames.MOVE && splitted.size == 3) {
+            val arg1 = splitted[1].toIntOrNull()
+            val arg2 = splitted[2].toIntOrNull()
+            if (arg1 != null && arg2 != null) {
+                resultingCommand.arg1 = arg1
+                resultingCommand.arg2 = arg2
             } else {
                 resultingCommand.commandName = REPLCommandNames.HELP
             }
-        } else if (commandName == REPLCommandNames.MOVE) {
-            if (splitted.size == 3) {
-                val arg1 = splitted[1].toIntOrNull()
-                val arg2 = splitted[2].toIntOrNull()
-                if (arg1 != null && arg2 != null) {
-                    resultingCommand.arg1 = arg1
-                    resultingCommand.arg2 = arg2
-                } else {
-                    resultingCommand.commandName = REPLCommandNames.HELP
-                }
-            } else {
-                resultingCommand.commandName = REPLCommandNames.HELP
-            }
+        } else {
+            resultingCommand.commandName = REPLCommandNames.HELP
         }
 
         return resultingCommand

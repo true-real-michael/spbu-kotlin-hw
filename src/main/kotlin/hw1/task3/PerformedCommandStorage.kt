@@ -1,6 +1,6 @@
 package hw1.task3
 
-class PerformedCommandStorage() : MutableList<Int> by ArrayList<Int>() {
+class PerformedCommandStorage : MutableList<Int> by ArrayList() {
 
     private enum class CommandName { PUSHFRONT, PUSHBACK, MOVE }
 
