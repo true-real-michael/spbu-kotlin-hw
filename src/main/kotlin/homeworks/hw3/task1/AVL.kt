@@ -27,16 +27,16 @@ open class AVL<K : Comparable<K>, V> : Map<K, V> {
 
     override fun containsValue(value: V): Boolean = values.contains(value)
 
-    class Node<K, V>(
+    open class Node<K, V>(
         override var key: K,
         override var value: V,
     ) : Map.Entry<K, V> {
-        var left: Node<K, V>? = null
+        open var left: Node<K, V>? = null
         var right: Node<K, V>? = null
     }
 
-    private fun get(key: K, from: Node<K, V>?): V? {
-        if (from == null) return null
-        return get(key, if (from.key > key) from.left else from.right)
+    private fun get(key: K, v: Node<K, V>?): V? {
+        if (v == null || v.key == key) return v?.value
+        return get(key, if (v.key > key) v.left else v.right)
     }
 }
