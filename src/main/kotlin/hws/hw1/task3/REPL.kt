@@ -1,4 +1,4 @@
-package hw1.task3
+package hws.hw1.task3
 
 import kotlin.system.exitProcess
 
@@ -27,27 +27,36 @@ class REPL {
         }
     }
 
+    private fun parseCommandName(commandNameStr: String): REPLCommandNames = when (commandNameStr) {
+        "pushback" -> REPLCommandNames.PUSHBACK
+        "pushfront" -> REPLCommandNames.PUSHFRONT
+        "undo" -> REPLCommandNames.UNDO
+        "move" -> REPLCommandNames.MOVE
+        "print" -> REPLCommandNames.PRINT
+        "exit" -> REPLCommandNames.EXIT
+        else -> REPLCommandNames.HELP
+    }
+
+    companion object {
+        const val ONE_ARGUEMENT = 2
+        const val TWO_ARGUEMENTS = 3
+    }
+
     private fun parseRawCommand(rawCommand: String): REPLCommand {
         val splitted = rawCommand.trim().split(" ")
 
-        val commandName = when(splitted.first()) {
-            "pushback" -> REPLCommandNames.PUSHBACK
-            "pushfront" -> REPLCommandNames.PUSHFRONT
-            "undo" -> REPLCommandNames.UNDO
-            "move" -> REPLCommandNames.MOVE
-            "print" -> REPLCommandNames.PRINT
-            "exit" -> REPLCommandNames.EXIT
-            else -> REPLCommandNames.HELP
-        }
+        val commandName = parseCommandName(splitted.first())
         val resultingCommand = REPLCommand(commandName)
 
-        if ((commandName == REPLCommandNames.PUSHBACK || commandName == REPLCommandNames.PUSHFRONT) && splitted.size == 2) {
+        if ((commandName == REPLCommandNames.PUSHBACK || commandName == REPLCommandNames.PUSHFRONT) &&
+            splitted.size == ONE_ARGUEMENT
+        ) {
             val arg = splitted[1].toIntOrNull()
             if (arg != null)
                 resultingCommand.arg1 = arg
             else
                 resultingCommand.commandName = REPLCommandNames.HELP
-        } else if (commandName == REPLCommandNames.MOVE && splitted.size == 3) {
+        } else if (commandName == REPLCommandNames.MOVE && splitted.size == TWO_ARGUEMENTS) {
             val arg1 = splitted[1].toIntOrNull()
             val arg2 = splitted[2].toIntOrNull()
             if (arg1 != null && arg2 != null) {
@@ -74,9 +83,8 @@ class REPL {
                 REPLCommandNames.EXIT -> exitProcess(0)
                 REPLCommandNames.HELP -> println(helpMessage)
             }
-        } catch (e : IllegalArgumentException) {
+        } catch (e: IllegalArgumentException) {
             println(e.message)
         }
-
     }
 }

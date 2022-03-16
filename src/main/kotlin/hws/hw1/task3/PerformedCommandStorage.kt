@@ -1,4 +1,4 @@
-package hw1.task3
+package hws.hw1.task3
 
 class PerformedCommandStorage : MutableList<Int> by ArrayList() {
 
@@ -19,7 +19,9 @@ class PerformedCommandStorage : MutableList<Int> by ArrayList() {
     }
 
     fun move(from: Int, to: Int) {
-        require(0 <= from && from < this.size && 0 <= to && to < this.size) { "at least one of the indexes is out of bounds" }
+        require(0 <= from && from < this.size && 0 <= to && to < this.size) {
+            "at least one of the indexes is out of bounds"
+        }
 
         this.add(if (from < to) (to + 1) else to, this[from])
         this.removeAt(if (from < to) from else (from + 1))
@@ -38,5 +40,4 @@ class PerformedCommandStorage : MutableList<Int> by ArrayList() {
             CommandName.MOVE -> this.move(latestCommand.arg2!!, latestCommand.arg1!!)
         }
     }
-
 }

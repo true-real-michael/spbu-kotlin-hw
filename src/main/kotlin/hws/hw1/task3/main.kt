@@ -1,4 +1,4 @@
-package hw1.task3
+package hws.hw1.task3
 
 fun main() {
     val repl = REPL()
