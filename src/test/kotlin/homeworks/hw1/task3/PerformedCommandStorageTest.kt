@@ -1,6 +1,6 @@
-package hw1.task3
+package homeworks.hw1.task3
 
-import hws.hw1.task3.PerformedCommandStorage
+import homeworks.hw1.task3.PerformedCommandStorage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
