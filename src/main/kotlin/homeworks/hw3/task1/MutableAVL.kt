@@ -22,7 +22,7 @@ class MutableAVL<K : Comparable<K>, V> : MutableMap<K, V>, AVL<K, V>() {
     override val keys: MutableSet<K>
         get() = _keys
 
-    private var _values: MutableCollection<V> = mutableListOf() // ?
+    private var _values: MutableCollection<V> = mutableListOf()
     override val values: MutableCollection<V>
         get() = _values
 
@@ -139,7 +139,7 @@ class MutableAVL<K : Comparable<K>, V> : MutableMap<K, V>, AVL<K, V>() {
 
     private fun rebalance(v: MutableNode<K, V>) {
         v.updateBalance()
-        var vv = v // a moment I do not understand
+        var vv = v
         if (vv.balance == NEGATIVE_BALANCE_BOUND) {
             if (vv.left!!.left.height() < vv.left!!.right.height())
                 vv.left = rotateLeft(vv.left!!)

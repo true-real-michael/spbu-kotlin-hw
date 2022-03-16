@@ -15,7 +15,7 @@ open class AVL<K : Comparable<K>, V> : Map<K, V> {
     override val keys: Set<K>
         get() = _keys
 
-    private var _values: Collection<V> = listOf() // ?
+    private var _values: Collection<V> = listOf()
     override val values: Collection<V>
         get() = _values
 
