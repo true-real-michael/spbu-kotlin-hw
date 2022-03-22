@@ -32,43 +32,54 @@ class AVL<K : Comparable<K>, V> : MutableMap<K, V> {
     override fun containsValue(value: V): Boolean = values.contains(value)
 
     override fun remove(key: K): V? {
-        if (root == null) return null
-        var v: AVLNode<K, V>? = root
-        var parent: AVLNode<K, V>? = root
-        var delNode: AVLNode<K, V>? = null
-        var child: AVLNode<K, V>? = root
-        while (child != null) {
-            parent = v
-            v = child
-            child = if (key >= v.key) v.right else v.left
-            if (key == v.key) delNode = v
-        }
-        val toReturn = delNode?.value
-        if (delNode != null) {
-            delNode.key = v!!.key
-            child = if (v.left != null) v.left else v.right
-            if (0 == root!!.key.compareTo(key)) {
-                root = child
+        val nodeToDelete = getNode(key, root)
+        if (nodeToDelete != null)
+            removeNode(nodeToDelete)
+        return nodeToDelete?.value
+    }
 
-                if (null != root) {
-                    root!!.parent = null
-                }
+    private fun removeNode(toDelete: AVLNode<K, V>) {
+        delEntry(toDelete)
+        if (toDelete.left == null && toDelete.right == null) { // if it is a leaf node
+            if (toDelete.parent == null) { // single node
+                root = null
+            } else if (toDelete.key < toDelete.parent!!.key) {
+                toDelete.parent!!.left = null
             } else {
-                if (parent!!.left == v)
-                    parent.left = child
-                else
-                    parent.right = child
-
-                if (null != child) {
-                    child.parent = parent
-                }
-
-                rebalance(parent)
+                toDelete.parent!!.right = null
             }
-
-            delEntry(delNode)
+        } else if (toDelete.left == null) {
+            if (toDelete.parent == null) {
+                root = toDelete.right
+            } else if (toDelete.key < toDelete.parent!!.key) {
+                toDelete.parent!!.left = toDelete.right
+                toDelete.left!!.parent = toDelete.parent
+            } else {
+                toDelete.parent!!.right = toDelete.right
+                toDelete.right!!.parent = toDelete.parent
+            }
+        } else if (toDelete.right == null) {
+            if (toDelete.parent == null) {
+                root = toDelete.left
+            } else if (toDelete.key < toDelete.parent!!.key) {
+                toDelete.parent!!.left = toDelete.left
+                toDelete.left!!.parent = toDelete.parent
+            } else {
+                toDelete.parent!!.right = toDelete.left
+                toDelete.right!!.parent = toDelete.parent
+            }
+        } else {
+            var minNode = toDelete.right!!
+            while (minNode.left != null) {
+                minNode = minNode.left!!
+            }
+            toDelete.key = minNode.key
+            toDelete.value = minNode.value
+            removeNode(minNode)
         }
-        return toReturn
+        if (toDelete.parent != null) {
+            rebalance(toDelete.parent!!)
+        }
     }
 
     override fun clear() {
@@ -121,11 +132,11 @@ class AVL<K : Comparable<K>, V> : MutableMap<K, V> {
         return toReturn
     }
 
-    override fun get(key: K): V? = get(key, root)
+    override fun get(key: K): V? = getNode(key, root)?.value
 
-    private fun get(key: K, v: AVLNode<K, V>?): V? {
-        if (v == null || v.key == key) return v?.value
-        return get(key, if (v.key > key) v.left else v.right)
+    private fun getNode(key: K, v: AVLNode<K, V>?): AVLNode<K, V>? {
+        if (v == null || v.key == key) return v
+        return getNode(key, if (v.key > key) v.left else v.right)
     }
 
     private fun rebalance(v: AVLNode<K, V>) {
@@ -186,5 +197,5 @@ class AVL<K : Comparable<K>, V> : MutableMap<K, V> {
     }
 }
 
-fun <K : Comparable<K>, V> avlOf(vararg data: Pair<K, V>): MutableMap<K, V> =
-    AVL<K, V>().apply { this.putAll(pairs = data) }
+fun <K : Comparable<K>, V> avlOf(vararg pairs: Pair<K, V>): MutableMap<K, V> =
+    AVL<K, V>().apply { this.putAll(pairs) }
