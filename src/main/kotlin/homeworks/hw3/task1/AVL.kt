@@ -92,7 +92,7 @@ class AVL<K : Comparable<K>, V> : MutableMap<K, V> {
             put(v.key, v.value)
     }
 
-    private fun addNode(newAVLNode: AVLNode<K, V>) {
+    private fun addEntry(newAVLNode: AVLNode<K, V>) {
         _size++
         _entries.add(newAVLNode)
         _keys.add(newAVLNode.key)
@@ -102,7 +102,7 @@ class AVL<K : Comparable<K>, V> : MutableMap<K, V> {
     override fun put(key: K, value: V): V? {
         if (root == null) {
             root = AVLNode(key, value, null)
-            addNode(root!!)
+            addEntry(root!!)
             return null
         }
         var v: AVLNode<K, V>? = root
@@ -120,7 +120,7 @@ class AVL<K : Comparable<K>, V> : MutableMap<K, V> {
         if (v != null)
             delEntry(v)
 
-        addNode(newNode)
+        addEntry(newNode)
 
         if (parent != null) {
             if (goLeft)
