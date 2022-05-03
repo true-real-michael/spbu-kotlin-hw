@@ -25,7 +25,7 @@ operator fun Matrix.times(other: Matrix): Matrix {
 }
 
 
-suspend fun multiplyMatrices(m1: Matrix, m2: Matrix): Matrix = coroutineScope {
+suspend fun multiplyByRows(m1: Matrix, m2: Matrix): Matrix = coroutineScope {
     val r1 = m1.size
     val c1 = m1[0].size
     val r2 = m2.size
@@ -46,7 +46,7 @@ suspend fun multiplyMatrices(m1: Matrix, m2: Matrix): Matrix = coroutineScope {
     return@coroutineScope result
 }
 
-suspend fun multiplyMatrices1(m1: Matrix, m2: Matrix): Matrix = coroutineScope {
+suspend fun multiplyByRowsCopying(m1: Matrix, m2: Matrix): Matrix = coroutineScope {
     val r1 = m1.size
     val c1 = m1[0].size
     val r2 = m2.size
@@ -83,6 +83,6 @@ fun main(): Unit = runBlocking {
     val m1 = genMatrix(1500, 1500)
     val m2 = genMatrix(1500, 1500)
     println(measureTimeMillis { m1 * m2 })
-    println(measureTimeMillis { multiplyMatrices(m1, m2) })
-    println(measureTimeMillis { multiplyMatrices1(m1, m2) })
+    println(measureTimeMillis { multiplyByRows(m1, m2) })
+    println(measureTimeMillis { multiplyByRowsCopying(m1, m2) })
 }
