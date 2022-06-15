@@ -7,8 +7,8 @@ import kotlinx.coroutines.Job
 import kotlin.random.Random.Default.nextInt
 import kotlin.system.measureTimeMillis
 
-
-typealias Matrix = Array<IntArray>
+/*
+//typealias Matrix = Array<IntArray>
 
 operator fun Matrix.times(other: Matrix): Matrix {
     val r1 = this.size
@@ -78,11 +78,17 @@ fun genMatrix(r: Int, c: Int): Matrix {
     return result
 }
 
+*/
+
 
 fun main(): Unit = runBlocking {
+    /*
     val m1 = genMatrix(1500, 1500)
     val m2 = genMatrix(1500, 1500)
     println(measureTimeMillis { m1 * m2 })
     println(measureTimeMillis { multiplyByRows(m1, m2) })
     println(measureTimeMillis { multiplyByRowsCopying(m1, m2) })
+    */
+
+    val a = List<List<Int>>(2) { List<Int>(2) {2} }
 }
